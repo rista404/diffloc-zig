@@ -109,5 +109,5 @@ pub fn main() !void {
 
     const stdout = std.io.getStdOut().writer();
 
-    try stdout.print("{s}{d}{s} {s}{d}{s}\n", .{ green[0], add, green[1], red[0], rm, red[1] });
+    try stdout.print("{s}+{d}{s} {s}-{d}{s}\n", .{ green[0], add, green[1], red[0], rm, red[1] });
 }

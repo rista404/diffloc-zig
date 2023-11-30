@@ -71,23 +71,10 @@ pub fn main() !void {
     }
     const allocator = gpa.allocator();
 
-    var argv = try std.process.argsWithAllocator(allocator);
-    defer argv.deinit();
-    _ = argv.skip(); // skip program filename
-    var diff_opt = argv.next();
-
-    var git_diff_argv_default = [_][]const u8{ "git", "diff", "--numstat" };
-    var git_diff_argv_list = std.ArrayList([]const u8).fromOwnedSlice(allocator, &git_diff_argv_default);
-
-    if (diff_opt) |opt| {
-        try git_diff_argv_list.append(opt);
-    }
-
-    const git_diff_argv = try git_diff_argv_list.toOwnedSlice();
-
+    const argv = [_][]const u8{ "git", "diff", "--numstat" };
     const result = try std.ChildProcess.exec(.{
         .allocator = allocator,
-        .argv = git_diff_argv,
+        .argv = &argv,
     });
     defer allocator.free(result.stdout);
     defer allocator.free(result.stderr);
